@@ -5,9 +5,37 @@ date: "4/17/2020"
 output: html_document
 ---
 
-```{r}
-read.csv("04-16-2020.csv")
+```{r error=FALSE, cache=TRUE}
+# Load packages
+library(ggplot2)
+library(dplyr)
+library(janitor)
+library(reshape2)
+library(tidyr)
+
+library(rstan)
+library(rstanarm)
+library(bayesplot)
 ```
+
+### Data exploration
+
+```{r}
+covid_data <- read.csv("04-16-2020.csv")
+covid_data
+head(covid_data)
+```
+
+```{r}
+covid_data %>% ggplot(aes(x = Confirmed)) + geom_density()
+```
+
+
+
+### Logistic Regression
+
+### Naive Bayes
+
 
 
 
