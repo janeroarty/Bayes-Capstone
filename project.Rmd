@@ -1,0 +1,81 @@
+---
+title: "project"
+author: "Yuren Pang"
+date: "April 17, 2020"
+output: html_document
+runtime: shiny
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(shiny)
+library(bayesrules)  # for the plotting functions
+library(ggplot2)
+```
+
+
+```{r include=FALSE}
+ui <- fluidPage(
+  titlePanel("Probability of Contracting COVID-19"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput(inputId = "s1",
+                   label = "P(S1 | C)",
+                   # this is the default value for S1
+                   value = 0.7,
+                   min = 0,
+                   max = 1,
+                   step = 0.05),
+      
+      sliderInput(inputId = "s2", 
+                 label = "P(S2 | C)",
+                 value = 0.3, 
+                 min = 0,
+                 max = 1,
+                 step = 0.05),
+      
+      sliderInput(inputId = "s3", 
+                 label = "P(S3 | C)",
+                 value = 0.5, 
+                 min = 0,
+                 max = 1,
+                 step = 0.05)
+    ),
+    
+    mainPanel(
+      h4("Result"),
+      tableOutput("priorTable"),
+      h4(textOutput("result", container = span))
+    )
+  ) 
+)
+```
+
+```{r include=FALSE}
+server <- function(input, output) {
+
+  output$view <- renderText({
+    input$s1    
+  })
+  
+  output$priorTable <- renderTable({
+    df <- data.frame(S1 = c(input$s1),
+                   S2 = c(input$s2),
+                   S3 = c(input$s3))
+    
+    df
+  })
+  
+  output$result <- renderText({
+    covid <- input$s1 * input$s2 * input$s3 * 0.002
+    covid
+  })
+}
+```
+
+```{r echo=FALSE}
+shinyApp(ui = ui, server = server)
+```
+
+
+
