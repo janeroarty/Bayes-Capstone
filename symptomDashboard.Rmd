@@ -1,0 +1,104 @@
+---
+title: "Dashboard"
+author: "Jane Roarty"
+date: "4/24/2020"
+output: html_document
+---
+
+```{r cache=TRUE}
+library(shinydashboard)
+library(shiny)
+library(bayesrules)  # for the plotting functions
+library(ggplot2)
+```
+
+
+
+```{r}
+header <- dashboardHeader(title = "Covid-19 Symptom Checker")
+
+sidebar <- dashboardSidebar(
+  ## Sidebar content
+    dashboardSidebar(
+      sidebarMenu(
+         menuItem("Model 1", tabName = "model1", icon = icon("dashboard")),
+        menuItem("Model 2", tabName = "model2", icon = icon("dashboard"))
+    )
+  )
+)
+
+body <- dashboardBody(tabItems(
+  
+  #First tab content
+  tabItem(tabName = "model1",
+          h2("content")
+          ),
+  
+  # Second tab content
+  tabItem(tabName = "model2",
+          fluidRow(
+            box(
+              title = "Symptoms",
+              sliderInput(inputId = "s1", 
+                          label = "Fever:", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.879, 
+                          step = 0.001),
+              sliderInput(inputId = "s2", 
+                          label = "Dry Cough:", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.677, 
+                          step = 0.001),
+              sliderInput(inputId = "s3", 
+                          label = "Fatigue", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.381, 
+                          step = 0.001)
+            ),
+            
+            box(
+              title = "Results",
+              tableOutput("priorTable"),
+              h3(textOutput("result", container = span))
+            )
+          )
+          )
+  
+))
+
+
+ui <- dashboardPage(header, sidebar, body)
+
+
+server <- function(input, output) {
+  output$view <- renderText({
+    input$s1    
+  })
+  
+  output$priorTable <- renderTable({
+    df <- data.frame(S1 = c(input$s1),
+                   S2 = c(input$s2),
+                   S3 = c(input$s3))
+    
+    df
+  })
+  
+  output$result <- renderText({
+    covid <- input$s1 * input$s2 * input$s3 * 0.002
+    covid
+  })
+}
+
+shinyApp(ui, server)
+```
+
+
+
+
+
+
+
+
