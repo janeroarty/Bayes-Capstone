@@ -1,26 +1,20 @@
 ---
 title: "Dashboard"
-author: "Rock Pang, Jane Roarty, Camilla Bendetti"
+author: "Jane Roarty"
 date: "4/24/2020"
 output: html_document
-runtime: shiny
 ---
 
-We aims to develop a shiny app to inform people of their likelihood of contracting the noval coronavirus based on a Native Bayesian Model. In the first window, we made check boxes for symptoms. The user can then adjust the slidebars for the probability of each symptom they checked in the previous page. This project will gives some ideas how widespread the virus is given certain prior information. 
-
-Our next step: we would also like to find out the probability of COVID P(C) based on different locations. Since this is a native bayesian model, we would also like to create a model that incorporate real-world dataset. This could be a simple model to predict/model the number of people who contract the virus in different states.
-
-We worked collaboratively on this project. Camilla did research on symptom statistics and Jane and Rock created the  dashboard. Jane added the slide bars and the tabs. Rock made the shiny app reactive and connected the checkboxes and slide bars in the first and second windows respectively.
-
-
-```{r}
+```{r cache=TRUE}
 library(shinydashboard)
 library(shiny)
 library(bayesrules)  # for the plotting functions
 library(ggplot2)
 ```
 
-```{r}
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
 header <- dashboardHeader(title = "Covid-19 Symptom Checker")
 sidebar <- dashboardSidebar(
   ## Sidebar content
@@ -31,204 +25,125 @@ sidebar <- dashboardSidebar(
     )
   )
 )
-```
-
-```{r}
-body <- dashboardBody(
-  tabItems(
-    #First tab content
-    tabItem(tabName = "model1",
-              fluidRow(
-                box(
-                  checkboxInput(inputId = "isFever", 
-                                label = "Fever",
-                                value = FALSE),
-                  checkboxInput(inputId = "isDryCough", 
-                                label = "Dry Cough",
-                                value = FALSE),
-                  checkboxInput(inputId = "isFatigue", 
-                                label = "Fatigue",
-                                value = FALSE),
-                  checkboxInput(inputId = "isShortBreath", 
-                                label = "Shortness of Breath",
-                                value = FALSE),
-                  checkboxInput(inputId = "isSoreThroat", 
-                                label = "Sore Throat",
-                                value = FALSE),
-                  checkboxInput(inputId = "isHeadache", 
-                                label = "Headache",
-                                value = FALSE),
-                  checkboxInput(inputId = "isChills", 
-                                label = "Chills",
-                                value = FALSE),
-                  checkboxInput(inputId = "isNausea", 
-                                label = "Nausea",
-                                value = FALSE),
-                  checkboxInput(inputId = "isCongestion", 
-                                label = "Congestion",
-                                value = FALSE),
-                  checkboxInput(inputId = "isDiarrhea", 
-                                label = "Diarrhea",
-                                value = FALSE),
-                  checkboxInput(inputId = "isJointAche", 
-                                label = "Joint Ache",
-                                value = FALSE)
-                )
-              )
-            ),
-    tabItem(tabName = "model2",
+body <- dashboardBody(tabItems(
+  
+  #First tab content
+  tabItem(tabName = "model1",
             fluidRow(
               box(
-                textOutput("result")
+                checkboxInput(inputId = "isFever", 
+                              label = "Fever",
+                              value = FALSE)
+              ),
+              box(
+                checkboxInput(inputId = "isDryCough", 
+                              label = "Dry Cough",
+                              value = FALSE)
+              ),
+              box(
+                checkboxInput(inputId = "isFatigue", 
+                              label = "Fatigue",
+                              value = FALSE)
+              ),
+              box(
+                checkboxInput(inputId = "isShortBreath", 
+                              label = "Shortness of Breath",
+                              value = FALSE)
+              ),
+              box(
+                checkboxInput(inputId = "isSoreThroat", 
+                              label = "Sore Throat",
+                              value = FALSE)
+              ),
+              box(
+                checkboxInput(inputId = "isHeadache", 
+                              label = "Headache",
+                              value = FALSE)
+              ),
+              box(
+                checkboxInput(inputId = "isChills", 
+                              label = "Chills",
+                              value = FALSE)
+              ),
+              box(
+                checkboxInput(inputId = "isNausea", 
+                              label = "Nausea",
+                              value = FALSE)
+              ),
+              box(
+                checkboxInput(inputId = "isCongestion", 
+                              label = "Congestion",
+                              value = FALSE)
+              ),
+              box(
+                checkboxInput(inputId = "isDiarrhea", 
+                              label = "Diarrhea",
+                              value = FALSE)
               ), 
               box(
-                uiOutput("feverslider"),
-                uiOutput("dryCoughSlider"),
-                uiOutput("fatigueSlider"),
-                uiOutput("shortofBreathSlider"),
-                uiOutput("soreThroatSlider")
-                ),
-              box(
-                uiOutput("headacheSlider"),
-                uiOutput("chillsSlider"),
-                uiOutput("nauseaSlider"),
-                uiOutput("congestionSlider"),
-                uiOutput("diarrheaSlider")
-                )
-            ))
-  )
-)
-
-ui <- dashboardPage(header, sidebar, body)
-```
-
-```{r}
-server <- function(input, output) {
-  bools <- reactive({
-      c(input$isFever, input$isDryCough, input$isFatigue, input$isShortBreath, input$isSoreThroat, input$isHeadache, input$isChills, input$isNausea, input$isCongestion, input$isDiarrhea)
-    })
+                checkboxInput(inputId = "isJointAche", 
+                              label = "Joint Ache",
+                              value = FALSE)
+              )
+            )
+          ),
   
-  x <- reactive({
-    c(input$s1, input$s2, input$s3, input$s4, input$s5, input$s6, input$s7, input$s8, input$s9, input$s10)
+  # Second tab content
+  tabItem(tabName = "model2",
+          fluidRow(
+            box(
+              title = "Symptoms",
+              sliderInput(inputId = "s1", 
+                          label = "Fever:", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.879, 
+                          step = 0.001),
+              sliderInput(inputId = "s2", 
+                          label = "Dry Cough:", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.677, 
+                          step = 0.001),
+              sliderInput(inputId = "s3", 
+                          label = "Fatigue", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.381, 
+                          step = 0.001)
+            ),
+            
+            box(
+              title = "Results",
+              tableOutput("priorTable"),
+              h3(textOutput("result", container = span))
+            )
+          )
+          )
+  
+))
+ui <- dashboardPage(header, sidebar, body)
+server <- function(input, output) {
+  output$view <- renderText({
+    input$s1    
+  })
+  
+  output$priorTable <- renderTable({
+    df <- data.frame(S1 = c(input$s1),
+                   S2 = c(input$s2),
+                   S3 = c(input$s3))
+    
+    df
   })
   
   output$result <- renderText({
-    prod(x())
-  })
-  
-  output$feverslider  <- renderUI({
-    if(bools()[1]) {
-      sliderInput(inputId = "s1", 
-                            label = "Fever:", 
-                            min = 0, 
-                            max = 1, 
-                            value = 0.879, 
-                            step = 0.001)
-    }
-  })
-  
-  output$dryCoughSlider <- renderUI({
-    if(bools()[2]) {
-      sliderInput(inputId = "s2", 
-                            label = "Dry Cough:", 
-                            min = 0, 
-                            max = 1, 
-                            value = 0.677, 
-                            step = 0.001)
-    }
-  })
-  
-  output$fatigueSlider <- renderUI({
-    if(bools()[3]) {
-      sliderInput(inputId = "s3", 
-                          label = "Fatigue", 
-                            min = 0, 
-                            max = 1, 
-                            value = 0.381, 
-                            step = 0.001)
-    }
-  })
-  
-  output$shortofBreathSlider <- renderUI({
-    if(bools()[4]) {
-      sliderInput(inputId = "s4", 
-                          label = "Shortness of Breath", 
-                          min = 0, 
-                          max = 1, 
-                          value = 0.186, 
-                          step = 0.001)
-    }
-  })
-  
-  output$soreThroatSlider <- renderUI({
-    if(bools()[5]) {
-       sliderInput(inputId = "s5", 
-                          label = "Sore Throat", 
-                          min = 0, 
-                          max = 1, 
-                          value = 0.139, 
-                          step = 0.001)
-    }
-  })
-  
-  output$headacheSlider <- renderUI({
-    if(bools()[6]) {
-      sliderInput(inputId = "s6", 
-                          label = "Headache", 
-                          min = 0, 
-                          max = 1, 
-                          value = 0.136, 
-                          step = 0.001)
-    }
-  })
-  
-  output$chillsSlider <- renderUI({
-    if(bools()[7]) {
-      sliderInput(inputId = "s7", 
-                          label = "Chills", 
-                          min = 0, 
-                          max = 1, 
-                          value = 0.114, 
-                          step = 0.001)
-    }
-  })
-  
-  output$nauseaSlider <- renderUI({
-    if(bools()[8]) {
-      sliderInput(inputId = "s8", 
-                          label = "Nausea or Vomiting", 
-                          min = 0, 
-                          max = 1, 
-                          value = 0.05, 
-                          step = 0.001)
-    }
-  })
-  
-  output$congestionSlider <- renderUI({
-    if(bools()[9]) {
-      sliderInput(inputId = "s9", 
-                          label = "Congestion", 
-                          min = 0, 
-                          max = 1, 
-                          value = 0.048, 
-                          step = 0.001)
-    }
-  })
-  
-  output$diarrheaSlider <- renderUI({
-    if(bools()[10]) {
-      sliderInput(inputId = "s10", 
-                          label = "Diarrhea", 
-                          min = 0, 
-                          max = 1, 
-                          value = 0.037, 
-                          step = 0.001)
-    }
+    covid <- input$s1 * input$s2 * input$s3 * 0.002
+    covid
   })
 }
 ```
 
-
 ```{r}
 shinyApp(ui, server)
 ```
+
