@@ -1,5 +1,5 @@
 ---
-title: "Checkpoint 3"
+title: "Checkpoint"
 author: "Camilla Bendetti, Rock Pang, Jane Roarty"
 date: "4/24/2020"
 output: html_document
@@ -27,7 +27,8 @@ sidebar <- dashboardSidebar(
       sidebarMenu(
          menuItem("Symptoms", tabName = "symptoms", icon = icon("dashboard")),
         menuItem("Covid Probabilities", tabName = "covidprobs", icon = icon("dashboard")),
-        menuItem("Symptom Probabilities", tabName = "symptomprobs", icon = icon("dashboard")),
+        menuItem("Flu Probabilities", tabName = "fluprobs", icon = icon("dashboard")),
+        menuItem("Neither Probabilities", tabName = "symptomprobs", icon = icon("dashboard")),
         menuItem("Results", tabName = "results", icon = icon("dashboard"))
         )
       )
@@ -105,61 +106,61 @@ body <- dashboardBody(tabItems(
           fluidRow(
             box(
               title = "Symptoms",
-              sliderInput(inputId = "s1", 
+              sliderInput(inputId = "c1", 
                           label = "Fever:", 
                           min = 0, 
                           max = 1, 
                           value = 0.879, 
                           step = 0.001),
-              sliderInput(inputId = "s2", 
+              sliderInput(inputId = "c2", 
                           label = "Dry Cough:", 
                           min = 0, 
                           max = 1, 
                           value = 0.677, 
                           step = 0.001),
-              sliderInput(inputId = "s3", 
+              sliderInput(inputId = "c3", 
                           label = "Fatigue", 
                           min = 0, 
                           max = 1, 
                           value = 0.381, 
                           step = 0.001),
-              sliderInput(inputId = "s4", 
+              sliderInput(inputId = "c4", 
                           label = "Shortness of Breath", 
                           min = 0, 
                           max = 1, 
                           value = 0.186, 
                           step = 0.001),
-              sliderInput(inputId = "s5", 
+              sliderInput(inputId = "c5", 
                           label = "Sore Throat", 
                           min = 0, 
                           max = 1, 
                           value = 0.139, 
                           step = 0.001),
-              sliderInput(inputId = "s6", 
+              sliderInput(inputId = "c6", 
                           label = "Headache", 
                           min = 0, 
                           max = 1, 
                           value = 0.136, 
                           step = 0.001),
-              sliderInput(inputId = "s7", 
+              sliderInput(inputId = "c7", 
                           label = "Chills", 
                           min = 0, 
                           max = 1, 
                           value = 0.114, 
                           step = 0.001),
-              sliderInput(inputId = "s8", 
+              sliderInput(inputId = "c8", 
                           label = "Nausea or Vomiting", 
                           min = 0, 
                           max = 1, 
                           value = 0.05, 
                           step = 0.001),
-              sliderInput(inputId = "s9", 
+              sliderInput(inputId = "c9", 
                           label = "Congestion", 
                           min = 0, 
                           max = 1, 
                           value = 0.048, 
                           step = 0.001),
-              sliderInput(inputId = "s10", 
+              sliderInput(inputId = "c10", 
                           label = "Diarrhea", 
                           min = 0, 
                           max = 1, 
@@ -170,76 +171,140 @@ body <- dashboardBody(tabItems(
           ),
   
   #third tab
-  tabItem(tabName = "symptomprobs",
+  tabItem(tabName = "fluprobs",
     fluidRow(
-      column(width = 7,
-        box(
-          sliderInput(inputId = "fever", 
+      box(
+          sliderInput(inputId = "f1", 
                           label = "Fever:", 
                           min = 0, 
                           max = 1, 
-                          value = 0.03, 
+                          value = 0.68, 
                           step = 0.001),
-          sliderInput(inputId = "cough", 
+          sliderInput(inputId = "f2", 
                           label = "Dry Cough:", 
                           min = 0, 
                           max = 1, 
-                          value = 0.05, 
+                          value = 0.93, 
                           step = 0.001),
-          sliderInput(inputId = "fatigue", 
+          sliderInput(inputId = "f3", 
                           label = "Fatigue", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.94, 
+                          step = 0.001),
+          sliderInput(inputId = "f4", 
+                          label = "Shortness of Breath", 
                           min = 0, 
                           max = 1, 
                           value = 0.1, 
                           step = 0.001),
-          sliderInput(inputId = "breath", 
-                          label = "Shortness of Breath", 
-                          min = 0, 
-                          max = 1, 
-                          value = 0.03, 
-                          step = 0.001),
-          sliderInput(inputId = "throat", 
+          sliderInput(inputId = "f5", 
                           label = "Sore Throat", 
                           min = 0, 
                           max = 1, 
-                          value = 0.05, 
-                          step = 0.001))),
-      column(width = 7,
-             box(
-               sliderInput(inputId = "headache", 
+                          value = 0.1, 
+                          step = 0.001),
+               sliderInput(inputId = "f6", 
                           label = "Headache", 
                           min = 0, 
                           max = 1, 
                           value = 0.1, 
                           step = 0.001),
-               sliderInput(inputId = "chills", 
+               sliderInput(inputId = "f7", 
+                          label = "Chills", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.5, 
+                          step = 0.001),
+               sliderInput(inputId = "f8", 
+                          label = "Nausea or Vomiting", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.1, 
+                          step = 0.001),
+               sliderInput(inputId = "f9", 
+                          label = "Congestion", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.5, 
+                          step = 0.001),
+               sliderInput(inputId = "f10", 
+                          label = "Diarrhea", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.05, 
+                          step = 0.001)
+    )
+  )
+  ),
+  
+  #fourth tab
+  tabItem(tabName = "symptomprobs",
+    fluidRow(
+        box(
+          sliderInput(inputId = "s1", 
+                          label = "Fever:", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.03, 
+                          step = 0.001),
+          sliderInput(inputId = "s2", 
+                          label = "Dry Cough:", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.05, 
+                          step = 0.001),
+          sliderInput(inputId = "s3", 
+                          label = "Fatigue", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.1, 
+                          step = 0.001),
+          sliderInput(inputId = "s4", 
+                          label = "Shortness of Breath", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.03, 
+                          step = 0.001),
+          sliderInput(inputId = "s5", 
+                          label = "Sore Throat", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.05, 
+                          step = 0.001),
+          sliderInput(inputId = "s6", 
+                          label = "Headache", 
+                          min = 0, 
+                          max = 1, 
+                          value = 0.1, 
+                          step = 0.001),
+               sliderInput(inputId = "s7", 
                           label = "Chills", 
                           min = 0, 
                           max = 1, 
                           value = 0.01, 
                           step = 0.001),
-               sliderInput(inputId = "nausea", 
+               sliderInput(inputId = "s8", 
                           label = "Nausea or Vomiting", 
                           min = 0, 
                           max = 1, 
                           value = 0.05, 
                           step = 0.001),
-               sliderInput(inputId = "congestion", 
+               sliderInput(inputId = "s9", 
                           label = "Congestion", 
                           min = 0, 
                           max = 1, 
                           value = 0.05, 
                           step = 0.001),
-               sliderInput(inputId = "diarrhea", 
+               sliderInput(inputId = "s10", 
                           label = "Diarrhea", 
                           min = 0, 
                           max = 1, 
                           value = 0.01, 
                           step = 0.001)
-               )
-             )
-      )
-    ),
+    )
+)
+),
   
   tabItem(tabName = "results",
     fluidRow(
@@ -263,25 +328,28 @@ server <- function(input, output) {
   
   output$priorTable <- renderTable({
     # Figure out how to make the table wrap around on a smaller window
-    df <- data.frame(S1 = c(input$s1),
-                   S2 = c(input$s2),
-                   S3 = c(input$s3),
-                   S4 = c(input$s4),
-                   S5 = c(input$s5),
-                   S6 = c(input$s6),
-                   S7 = c(input$s7),
-                   S8 = c(input$s8),
-                   S9 = c(input$s9),
-                   S10 = c(input$s10),
-                   spacing = c('xs')
+    df <- data.frame(S1 = c(input$c1, input$f1, input$s1),
+                   S2 = c(input$c2, input$f2, input$s2),
+                   S3 = c(input$c3, input$f3, input$s3),
+                   S4 = c(input$c4, input$f4, input$s4),
+                   S5 = c(input$c5, input$f5, input$s5),
+                   S6 = c(input$c6, input$f6, input$s6),
+                   S7 = c(input$c7, input$f7, input$s7),
+                   S8 = c(input$c8, input$f8, input$s8),
+                   S9 = c(input$c9, input$f9, input$s9),
+                   S10 = c(input$c10, input$f10, input$s10)
                    )
-    
     df
   })
   
   output$result <- renderText({
-    covid <- (input$s1 * input$s2 * input$s3 * input$s4 * input$s5 * input$s6 * input$s7 * input$s8 * input$s9 * input$s10 * 0.002)
-    covid
+    c_prop <- (input$c1 * input$c2 * input$c3 * input$c4 * input$c5 * input$c6 * input$c7 * input$c8 * input$c9 * input$c10 * 0.002)
+    f_prop <- (input$f1 * input$f2 * input$f3 * input$f4 * input$f5 * input$f6 * input$f7 * input$f8 * input$f9 * input$f10 * 0.01)
+    n_prop <- (input$s1 * input$s2 * input$s3 * input$s4 * input$s5 * input$s6 * input$s7 * input$s8 * input$s9 * input$s10 * 0.988)
+    covid <- c_prop/(c_prop+f_prop+n_prop)
+    flu <- f_prop/(c_prop+f_prop+n_prop)
+    neither <- n_prop/(c_prop+f_prop+n_prop)
+    c(covid, flu, neither)
   })
 }
 
