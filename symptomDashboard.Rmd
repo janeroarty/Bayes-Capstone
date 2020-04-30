@@ -3,11 +3,12 @@ title: "Checkpoint"
 author: "Camilla Bendetti, Rock Pang, Jane Roarty"
 date: "4/24/2020"
 output: html_document
+runtime: shiny
 ---
 
 ## Part 1
 
-```{r cache=TRUE}
+```{r}
 library(shinydashboard)
 library(shiny)
 library(bayesrules)  # for the plotting functions
@@ -17,7 +18,7 @@ library(ggplot2)
 
 
 ```{r}
-header <- dashboardHeader(title = "Covid-19 Symptom Checker")
+header <- dashboardHeader(title = "Covid-19 Symptom Checker", titleWidth = 300)
 ```
 
 ```{r}
@@ -25,11 +26,12 @@ sidebar <- dashboardSidebar(
   ## Sidebar content
     dashboardSidebar(
       sidebarMenu(
-         menuItem("Symptoms", tabName = "symptoms", icon = icon("dashboard")),
+         menuItem("Welcome", tabName = "welcome", icon = icon("info")),  
+        menuItem("Symptoms", tabName = "symptoms", icon = icon("thermometer-three-quarters")),
         menuItem("Covid Probabilities", tabName = "covidprobs", icon = icon("dashboard")),
         menuItem("Flu Probabilities", tabName = "fluprobs", icon = icon("dashboard")),
         menuItem("Neither Probabilities", tabName = "symptomprobs", icon = icon("dashboard")),
-        menuItem("Results", tabName = "results", icon = icon("dashboard"))
+        menuItem("Results", tabName = "results", icon = icon("poll-h"))
         )
       )
 )
@@ -39,6 +41,10 @@ sidebar <- dashboardSidebar(
 ```{r}
 
 body <- dashboardBody(tabItems(
+  
+  tabItem(tabName = "welcome", 
+          tags$h1("Welcome to a Naive Bayesian Model for COVID-19")),
+  
   
   #First tab content
   tabItem(tabName = "symptoms",
