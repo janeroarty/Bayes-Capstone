@@ -39,10 +39,24 @@ sidebar <- dashboardSidebar(
 
 body <- dashboardBody(tabItems(
   
-  tabItem(tabName = "welcome", 
+  tabItem(tabName = "welcome",
           tags$h2("Welcome to a Naive Bayesian Model for COVID-19"),
-          tags$h3("Welcome to a Naive Bayesian Model for COVID-19. In this SHINY app, there are two main features. In the symptoms tab you can check the box of which symptoms you are experiencing. The results tab will then tell you the probability that you have COVID-19, the probability that you have the flu, and the probability that you have neither. In the 'Probabilities' tabs you can adjust the probabilities for each symptom. We made assumptions about default probabilities using data from the CDC(link) and (link)."),
-          tags$h4("NOTICE: This app should not be used for diagnosis. Many assumptions were made in the creation of this app. If you think that you have coronavirus, you should get tested immediately and stay quarantined until you are recovered.")),
+          tags$p("Welcome to a Naive Bayesian Model for COVID-19. In this SHINY app, there are two main features. In the symptoms tab you can check the box of which symptoms you are experiencing. The results tab will then tell you the probability that you have COVID-19, the probability that you have the flu, and the probability that you have neither. In the 'Probabilities' tabs you can adjust the probabilities for each symptom. We made assumptions about default probabilities using data from the CDC(link) and (link)."),
+          tags$div(
+            tags$b("Theory"),
+            tags$h4(withMathJax("$$P(C) + P(F) + P(N) = 1$$")),
+            tags$h4(withMathJax("$$P(C|S_{1},S_{2},...,S_{n}) \\propto c = P(C)*\\prod_{i=1}^{n}P(S_{i}|C)$$")),
+            tags$h4(withMathJax("$$P(F|S_{1},S_{2},...,S_{n}) \\propto f = P(F)*\\prod_{i=1}^{n}P(S_{i}|F)$$")),
+            tags$h4(withMathJax("$$P(N|S_{1},S_{2},...,S_{n}) \\propto n = P(N)*\\prod_{i=1}^{n}P(S_{i}|N)$$")),
+            tags$p("Then, we have: "),
+            tags$h4(withMathJax("$$P(C|S_{1},S_{2},...,S_{n}) = c/(c+f+n)$$")),
+            tags$h4(withMathJax("$$P(F|S_{1},S_{2},...,S_{n}) = f/(c+f+n)$$")),
+            tags$h4(withMathJax("$$P(N|S_{1},S_{2},...,S_{n}) = n/(c+f+n)$$"))
+          ),
+          
+          tags$div(
+            HTML("<b>NOTICE:</b> This app should not be used for diagnosis. Many assumptions were made in the creation of this app. If you think that you have coronavirus, you should get tested immediately and stay quarantined until you are recovered."))),
+        
   
   
   
