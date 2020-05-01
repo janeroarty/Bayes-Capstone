@@ -27,7 +27,8 @@ sidebar <- dashboardSidebar(
         menuItem("Covid Probabilities", tabName = "covidprobs", icon = icon("dashboard")),
         menuItem("Flu Probabilities", tabName = "fluprobs", icon = icon("dashboard")),
         menuItem("Neither Probabilities", tabName = "symptomprobs", icon = icon("dashboard")),
-        menuItem("Results", tabName = "results", icon = icon("poll-h"))
+        menuItem("Results", tabName = "results", icon = icon("poll-h")),
+        menuItem("Theory", tabName = "theory", icon = icon("info"))
         )
       )
 )
@@ -39,7 +40,10 @@ sidebar <- dashboardSidebar(
 body <- dashboardBody(tabItems(
   
   tabItem(tabName = "welcome", 
-          tags$h1("Welcome to a Naive Bayesian Model for COVID-19")),
+          tags$h2("Welcome to a Naive Bayesian Model for COVID-19"),
+          tags$h3("Welcome to a Naive Bayesian Model for COVID-19. In this SHINY app, there are two main features. In the symptoms tab you can check the box of which symptoms you are experiencing. The results tab will then tell you the probability that you have COVID-19, the probability that you have the flu, and the probability that you have neither. In the 'Probabilities' tabs you can adjust the probabilities for each symptom. We made assumptions about default probabilities using data from the CDC and This."),
+          tags$h4("NOTICE: This app should not be used for diagnosis. Many assumptions were made in the creation of this app. If you think that you have coronavirus, you should get tested immediately and stay quarantined until you are recovered.")),
+  
   
   
   #First tab content
