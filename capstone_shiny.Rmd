@@ -27,8 +27,7 @@ sidebar <- dashboardSidebar(
         menuItem("Covid Probabilities", tabName = "covidprobs", icon = icon("dashboard")),
         menuItem("Flu Probabilities", tabName = "fluprobs", icon = icon("dashboard")),
         menuItem("Neither Probabilities", tabName = "symptomprobs", icon = icon("dashboard")),
-        menuItem("Results", tabName = "results", icon = icon("poll-h")),
-        menuItem("Theory", tabName = "theory", icon = icon("info"))
+        menuItem("Results", tabName = "results", icon = icon("poll-h"))
         )
       )
 )
