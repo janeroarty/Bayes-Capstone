@@ -1,10 +1,11 @@
 ---
-title: "Checkpoint 4"
+title: "Naive Bayes COVID-19 Symptom Checker"
 author: "Camilla Bendetti, Rock Pang, Jane Roarty"
 date: "4/30/2020"
 output: html_document
 runtime: shiny
 ---
+
 
 ```{r, echo=FALSE}
 library(shinydashboard)
@@ -24,9 +25,7 @@ sidebar <- dashboardSidebar(
       sidebarMenu(
          menuItem("Welcome", tabName = "welcome", icon = icon("info")),  
         menuItem("Symptoms", tabName = "symptoms", icon = icon("thermometer-three-quarters")),
-        menuItem("Covid Probabilities", tabName = "covidprobs", icon = icon("dashboard")),
-        menuItem("Flu Probabilities", tabName = "fluprobs", icon = icon("dashboard")),
-        menuItem("Neither Probabilities", tabName = "symptomprobs", icon = icon("dashboard")),
+        menuItem("Symptom Probabilities", tabName = "covidprobs", icon = icon("dashboard")),
         menuItem("Disease Prevalence", tabName = "diseaseprev", icon = icon("dashboard")),
         menuItem("Results", tabName = "results", icon = icon("poll-h"))
         )
@@ -54,7 +53,8 @@ body <- dashboardBody(tabItems(
             tags$p("Then, we have: "),
             tags$h4(withMathJax("$$P(C|S_{1},S_{2},...,S_{n}) = \\frac{c}{c+f+n}$$")),
             tags$h4(withMathJax("$$P(F|S_{1},S_{2},...,S_{n}) = \\frac{f}{c+f+n}$$")),
-            tags$h4(withMathJax("$$P(N|S_{1},S_{2},...,S_{n}) = \\frac{n}{c+f+n}$$"))
+            tags$h4(withMathJax("$$P(N|S_{1},S_{2},...,S_{n}) = \\frac{n}{c+f+n}$$")),
+            tags$p(withMathJax("Where P(C) = Probability of COVID-19, P(F) = Probability of Flu, and P(N) = Probability of neither. P(C) and P(F) are estimates of the proportions of people with each respective disease at a given time. Each S represents a different symptom that a person may experience with COVID-19. $$P(S_{i}|C)$$ is the probability of having symptom i when a person has COVID-19. This applies to $$P(S_{i}|F)$$ and $$P(S_{i}|N)$$ with the flu and neither, respectively."))
           ),
           
           tags$div(
@@ -65,6 +65,8 @@ body <- dashboardBody(tabItems(
   #First tab content
   tabItem(tabName = "symptoms",
             fluidRow(
+              box(title = "Instructions:", "Check all of your symptoms. Once finished, either adjust the probabilites in the following two tabs (though they have already been set to approximate values) or proceed to the results tab for the probabilites of each disease.", width = 12)),
+          fluidRow(
               box(
                 checkboxInput(inputId = "isFever", 
                               label = "Fever",
@@ -114,19 +116,23 @@ body <- dashboardBody(tabItems(
                 checkboxInput(inputId = "isDiarrhea", 
                               label = "Diarrhea",
                               value = FALSE)
-              ), 
-              box(
-                checkboxInput(inputId = "isJointAche", 
-                              label = "Joint Ache",
-                              value = FALSE)
               )
+              # , 
+              # box(
+              #   checkboxInput(inputId = "isJointAche", 
+              #                 label = "Joint Ache",
+              #                 value = FALSE)
+              # )
             )
           ),
   
   # Second tab content
   tabItem(tabName = "covidprobs",
           fluidRow(
-            box(
+            box(title = "Instructions:", "Here, you can adjust the probabilites of each symptom given each disease. We set the initial values based on preliminary research, but these values can change as research develops.", width = 12
+            )),
+          fluidRow(
+            box(title = "COVID-19 Probabilities",
                 uiOutput("feversliderC"),
                 uiOutput("dryCoughSliderC"),
                 uiOutput("fatigueSliderC"),
@@ -137,14 +143,8 @@ body <- dashboardBody(tabItems(
                 uiOutput("nauseaSliderC"),
                 uiOutput("congestionSliderC"),
                 uiOutput("diarrheaSliderC")
-                )
-            )
-          ),
-  
-  #third tab
-  tabItem(tabName = "fluprobs",
-    fluidRow(
-      box(
+                ),
+            box(title = "Flu Probabilities",
                 uiOutput("feversliderF"),
                 uiOutput("dryCoughSliderF"),
                 uiOutput("fatigueSliderF"),
@@ -155,14 +155,8 @@ body <- dashboardBody(tabItems(
                 uiOutput("nauseaSliderF"),
                 uiOutput("congestionSliderF"),
                 uiOutput("diarrheaSliderF")
-                )
-  )
-  ),
-  
-  #fourth tab
-  tabItem(tabName = "symptomprobs",
-    fluidRow(
-          box(
+                ),
+            box(title = "Neither Probabilites",
                 uiOutput("feversliderS"),
                 uiOutput("dryCoughSliderS"),
                 uiOutput("fatigueSliderS"),
@@ -174,9 +168,9 @@ body <- dashboardBody(tabItems(
                 uiOutput("congestionSliderS"),
                 uiOutput("diarrheaSliderS")
                 )
-)
-),
-
+            )
+          ),
+  
   tabItem(tabName = "diseaseprev",
           fluidRow(
             box(
@@ -203,7 +197,8 @@ body <- dashboardBody(tabItems(
                 h3("Probability of covid-19 = ", textOutput("resultC", container = span)),
                 h3("Probability of flu = ", textOutput("resultF", container = span)),
                 h3("Probability of neither = ", textOutput("resultN", container = span))
-                )
+                ),
+      box(plotOutput("plot1", width = 6))
     )
   )
   
@@ -264,6 +259,13 @@ server <- function(input, output) {
     neither <- n_prop/(c_prop+f_prop+n_prop)
     neither
   })
+  
+  output$plot <- renderPlot(
+    barplot(c(resultC, resultF, resultN))
+    # probDat <- data.frame(disease = c("COVID-19", "Flu", "Neither"),
+    #                       probs = c(resultC, resultF, resultN))
+    # ggplot(data = probDat, aes(x = disease)) + geom_bar() + ylab('Disease Probabilities')
+  )
   
   
 # Sliders for covid
@@ -602,3 +604,6 @@ server <- function(input, output) {
 
 shinyApp(ui, server)
 ```
+
+
+
