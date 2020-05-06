@@ -198,11 +198,13 @@ body <- dashboardBody(tabItems(
                 h3("Probability of flu = ", textOutput("resultF", container = span)),
                 h3("Probability of neither = ", textOutput("resultN", container = span))
                 ),
-      box(plotOutput("plot1", width = 6))
+      box(h3("You most likely have:", textOutput("most_likely", container = span))),
+      box(plotOutput("plot1", width = 6)
     )
   )
+  )
   
-  ))
+))
 
 ```
 
@@ -258,6 +260,19 @@ server <- function(input, output) {
     flu <- f_prop/(c_prop+f_prop+n_prop)
     neither <- n_prop/(c_prop+f_prop+n_prop)
     neither
+  })
+  
+  output$most_likely <- renderText({
+    final_prob <- ""
+    if(max(c(resultC, resultF, resultN)) == resultC){
+      final_prob <- "COVID-19"
+    }
+    if(max(c(resultC, resultF, resultN)) == resultF){
+      final_prob <- "Flu"
+    }
+    if(max(c(resultC, resultF, resultN)) == resultN){
+      final_prob <- "Neither"
+    }
   })
   
   output$plot <- renderPlot(
