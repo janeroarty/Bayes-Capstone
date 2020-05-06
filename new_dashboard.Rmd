@@ -175,6 +175,8 @@ tags$p("Since this is a Naive Bayes model we needed to make some assumptions. Ou
   
   tabItem(tabName = "diseaseprev",
           fluidRow(
+              box(title = "Instructions:", "On this page, you can adjust the probabilities to reflect the infection rate of each disease in your population. This tab can help to account for seasonality including the time of year or the geographical location that are relevant when taking this test.", width = 12)),
+          fluidRow(
             box(
               sliderInput(inputId = "covidPrev", 
                           label = "COVID-19 Infection Rate", 
