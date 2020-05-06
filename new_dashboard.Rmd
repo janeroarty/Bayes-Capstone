@@ -202,8 +202,9 @@ tags$p("Since this is a Naive Bayes model we needed to make some assumptions. Ou
                 h3("Probability of flu = ", textOutput("resultF", container = span)),
                 h3("Probability of neither = ", textOutput("resultN", container = span))
                 ),
+    fluidRow(
       box(h3("You most likely have:", textOutput("most_likely", container = span))),
-      box(plotOutput("plot1", width = 6)
+      box(plotOutput("plot1", width = "100%"))
     )
   )
   )
@@ -274,11 +275,8 @@ server <- function(input, output) {
     }
   })
   
-  output$plot <- renderPlot(
-    barplot(c(resultC, resultF, resultN))
-    # probDat <- data.frame(disease = c("COVID-19", "Flu", "Neither"),
-    #                       probs = c(resultC, resultF, resultN))
-    # ggplot(data = probDat, aes(x = disease)) + geom_bar() + ylab('Disease Probabilities')
+  output$plot1 <- renderPlot(
+    barplot(results(), names.arg=c("COVID-19", "Flu", "Neither"))
   )
   
   
