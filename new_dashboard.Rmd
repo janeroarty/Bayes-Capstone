@@ -44,6 +44,8 @@ body <- dashboardBody(tabItems(
           tags$p(tags$a(href="https://www.cdc.gov/flu/symptoms/coldflu.htm", "CDC")),
           tags$p(tags$a(href="https://www.who.int/docs/default-source/coronaviruse/who-china-joint-mission-on-covid-19-final-report.pdf", "WHO")),
           
+tags$p("Since this is a Naive Bayes model we needed to make some assumptions. Our model assumes independence among each symptom and it assumes independence between the flu, COVID-19 and neither. We also limited the number of symptom in our model. We choose 10 symptoms because they are the most common and we were able to find the most information about these symptoms in order to assign default probabilites. Finally, although we did have reaserch for each symptom we made some assumptions about the probabilities for each symptom. We hoped to remedy that to some extent by allowing users to change the probabilities for each symptom in the 'Symptom Probabilities' tab."), 
+          
           tags$div(
             tags$b("Theory"),
             tags$h4(withMathJax("$$P(C) + P(F) + P(N) = 1$$")),
