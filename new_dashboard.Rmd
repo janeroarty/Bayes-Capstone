@@ -7,18 +7,18 @@ runtime: shiny
 ---
 
 
-```{r, echo=FALSE}
+```{r, include=FALSE}
 library(shinydashboard)
 library(shiny)
 library(bayesrules)  # for the plotting functions
 library(ggplot2)
 ```
 
-```{r, echo=FALSE}
+```{r, include=FALSE}
 header <- dashboardHeader(title = "COVID-19 Symptom Checker", titleWidth = 300)
 ```
 
-```{r, echo=FALSE}
+```{r, include=FALSE}
 sidebar <- dashboardSidebar(
   ## Sidebar content
     dashboardSidebar(
@@ -34,7 +34,7 @@ sidebar <- dashboardSidebar(
 
 ```
 
-```{r, echo=FALSE}
+```{r, include=FALSE}
 
 body <- dashboardBody(tabItems(
   
@@ -175,7 +175,8 @@ tags$p("Since this is a Naive Bayes model we needed to make some assumptions. Ou
   
   tabItem(tabName = "diseaseprev",
           fluidRow(
-            box(title = "Instructions:", "On this page, you can adjust the probabilities to reflect the infection rate of each disease in your population. This tab can help to account for seasonality including the time of year or the geographical location that are relevant when taking this test. Here you can adjust the probability of having COVID-19 (P(C)) and the Flu (P(F)). The probability of neither (P(N)) is calculated by subtracting P(C) and P(F) from 1.", width = 12),
+            box(title = "Instructions:", "On this page, you can adjust the probabilities to reflect the infection rate of each disease in your population. This tab can help to account for seasonality including the time of year or the geographical location that are relevant when taking this test. Here you can adjust the probability of having COVID-19 (P(C)) and the Flu (P(F)). The probability of neither (P(N)) is calculated by subtracting P(C) and P(F) from 1.", width = 12)),
+           fluidRow(
             box(
               sliderInput(inputId = "covidPrev", 
                           label = "COVID-19 Infection Rate", 
@@ -213,7 +214,7 @@ tags$p("Since this is a Naive Bayes model we needed to make some assumptions. Ou
 ```
 
 
-```{r}
+```{r echo=FALSE}
 ui <- dashboardPage(header, sidebar, body)
 
 
