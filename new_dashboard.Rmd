@@ -175,6 +175,7 @@ tags$p("Since this is a Naive Bayes model we needed to make some assumptions. Ou
   
   tabItem(tabName = "diseaseprev",
           fluidRow(
+            box(title = "Instructions:", "Here you can adjust the probability of having COVID-19 (P(C)) and the Flu (P(F)). The probability of neither (P(N)) is calculated by subtracting P(C) and P(F) from 1."),
             box(
               sliderInput(inputId = "covidPrev", 
                           label = "COVID-19 Infection Rate", 
