@@ -15,7 +15,7 @@ library(ggplot2)
 ```
 
 ```{r, echo=FALSE}
-header <- dashboardHeader(title = "Covid-19 Symptom Checker", titleWidth = 300)
+header <- dashboardHeader(title = "COVID-19 Symptom Checker", titleWidth = 300)
 ```
 
 ```{r, echo=FALSE}
