@@ -194,15 +194,17 @@ body <- dashboardBody(tabItems(
     fluidRow(
       box(
                 title = "Results",
-                h3("Probability of covid-19 = ", textOutput("resultC", container = span)),
+                h3("Probability of COVID-19 = ", textOutput("resultC", container = span)),
                 h3("Probability of flu = ", textOutput("resultF", container = span)),
                 h3("Probability of neither = ", textOutput("resultN", container = span))
                 ),
-      box(plotOutput("plot1", width = 6))
+      box(h3("You most likely have:", textOutput("most_likely", container = span))),
+      box(plotOutput("plot1", width = 6)
     )
   )
+  )
   
-  ))
+))
 
 ```
 
@@ -230,34 +232,42 @@ server <- function(input, output) {
     c(input$s1, input$s2, input$s3, input$s4, input$s5, input$s6, input$s7, input$s8, input$s9, input$s10)
   })
   
-  output$resultC <- renderText({
-    c_prop <- prod(c_vals()) * input$covidPrev
-    f_prop <- prod(f_vals()) * input$fluPrev
-    n_prop <- prod(s_vals()) * (1-input$fluPrev-input$covidPrev)
+  covidPrevious <- reactive({ input$covidPrev })
+  fluPrevious <- reactive({ input$fluPrev })
+  
+  results <- reactive({
+    c_prop <- prod(c_vals()) * covidPrevious()
+    f_prop <- prod(f_vals()) * fluPrevious()
+    n_prop <- prod(s_vals()) * (1 - covidPrevious() - fluPrevious())
+    
     covid <- c_prop/(c_prop+f_prop+n_prop)
     flu <- f_prop/(c_prop+f_prop+n_prop)
     neither <- n_prop/(c_prop+f_prop+n_prop)
-    covid
+    c(covid, flu, neither)
+  })
+  
+  output$resultC <- renderText({
+    results()[1]
   })
   
   output$resultF <- renderText({
-    c_prop <- prod(c_vals()) * input$covidPrev
-    f_prop <- prod(f_vals()) * input$fluPrev
-    n_prop <- prod(s_vals()) * (1-input$fluPrev-input$covidPrev)
-    covid <- c_prop/(c_prop+f_prop+n_prop)
-    flu <- f_prop/(c_prop+f_prop+n_prop)
-    neither <- n_prop/(c_prop+f_prop+n_prop)
-    flu
+    results()[2]
   })
   
   output$resultN <- renderText({
-    c_prop <- prod(c_vals()) * input$covidPrev
-    f_prop <- prod(f_vals()) * input$fluPrev
-    n_prop <- prod(s_vals()) * (1-input$fluPrev-input$covidPrev)
-    covid <- c_prop/(c_prop+f_prop+n_prop)
-    flu <- f_prop/(c_prop+f_prop+n_prop)
-    neither <- n_prop/(c_prop+f_prop+n_prop)
-    neither
+    results()[3]
+  })
+  
+  
+  output$most_likely <- renderText({
+    final_prob <- ""
+    if(results()[1] > results()[2] & results()[1] > results()[3]){
+      final_prob <- "COVID-19"
+    } else if (results()[2] > results()[3]) {
+      final_prob <- "Flu"
+    } else {
+      final_prob <- "Neither"
+    }
   })
   
   output$plot <- renderPlot(

@@ -1,0 +1,10 @@
+name: capstone_shiny
+title:
+username:
+account: yuren-pang
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2254162
+bundleId: 3112295
+url: https://yuren-pang.shinyapps.io/capstone_shiny/
+when: 1588792510.43316
