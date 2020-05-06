@@ -60,7 +60,7 @@ tags$p("Since this is a Naive Bayes model we needed to make some assumptions. Ou
           ),
           
           tags$div(
-            HTML("<b>NOTICE:</b> This app should not be used for diagnosis. Many assumptions were made in the creation of this app. If you think that you have coronavirus, you should get tested immediately and stay quarantined until you are recovered."))),
+            HTML("<b>NOTICE:</b> This app should not be used for diagnosis. We used Naive Bayesian Statistics for our model so many assumptions were made in the creation of this app. If you think that you have COVID-19, you should get tested immediately and stay quarantined until you are recovered."))),
         
   
   
@@ -205,7 +205,8 @@ tags$p("Since this is a Naive Bayes model we needed to make some assumptions. Ou
     fluidRow(
       box(h3("You most likely have:", textOutput("most_likely", container = span))),
       box(plotOutput("plot1", width = "100%"))
-    )
+    ),
+    box(title = "WARNING:", "The results from this app should not be used for diagnosis. We used Naive Bayesian Statistics for our model so many assumptions were made in the creation of this app. If you think that you have COVID-19, you should get tested immediately and stay quarantined until you are recovered.", width = 12)
   )
   )
   
