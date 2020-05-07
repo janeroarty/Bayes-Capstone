@@ -1,8 +1,6 @@
 ---
 runtime: shiny
-output: 
-  ioslides_presentation:
-    css: temp.css
+output: ioslides_presentation
 ---
 
 
