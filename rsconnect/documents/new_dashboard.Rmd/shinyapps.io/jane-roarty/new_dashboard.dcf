@@ -1,0 +1,10 @@
+name: new_dashboard
+title:
+username:
+account: jane-roarty
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2257469
+bundleId: 3114055
+url: https://jane-roarty.shinyapps.io/new_dashboard/
+when: 1588822435.04092

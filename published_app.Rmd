@@ -1,7 +1,12 @@
 ---
-runtime: shiny
+title: "Naive Bayes COVID-19 Symptom Checker"
+author: "Camilla Bendetti, Rock Pang, Jane Roarty"
+date: "4/30/2020"
 output: html_document
+runtime: shiny
 ---
+
+
 ```{r, include=FALSE}
 library(shinydashboard)
 library(shiny)
@@ -199,7 +204,7 @@ tags$p("Since this is a Naive Bayes model we needed to make some assumptions. Ou
                 ),
     fluidRow(
       box(h3("You most likely have:", textOutput("most_likely", container = span))),
-      box(plotOutput("plot1", width = "90%"))
+      box(plotOutput("plot1", width = "100%"))
     ),
     box(title = "WARNING:", "The results from this app should not be used for diagnosis. We used Naive Bayesian Statistics for our model so many assumptions were made in the creation of this app. If you think that you have COVID-19, you should get tested immediately and stay quarantined until you are recovered.", width = 12)
   )
@@ -611,7 +616,7 @@ server <- function(input, output) {
   })
 }
 
-shinyApp(ui, server, options = list(height = 900, width = 1000)) #, options = list(height = 1080, width = 1000))
+shinyApp(ui, server)
 ```
 
 
