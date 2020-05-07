@@ -1,9 +1,6 @@
 ---
-title: "Naive Bayes COVID-19 Symptom Checker"
-author: "Camilla Bendetti, Rock Pang, Jane Roarty"
-date: "4/30/2020"
-output: html_document
 runtime: shiny
+output: html_document
 ---
 
 ```{r, include=FALSE}
